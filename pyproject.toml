@@ -1,0 +1,23 @@
+[project]
+name = "election"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.16.2",
+    "bcrypt==4.0.1",
+    "bs4>=0.0.2",
+    "dotenv>=0.9.9",
+    "fastapi>=0.115.12",
+    "jinja2>=3.1.6",
+    "passlib>=1.7.4",
+    "psycopg2>=2.9.10",
+    "pydantic>=2.11.7",
+    "pyjwt>=2.10.1",
+    "python-multipart>=0.0.20",
+    "requests>=2.32.4",
+    "sqlalchemy>=2.0.41",
+    "typing>=3.10.0.0",
+    "uvicorn>=0.34.3",
+]
