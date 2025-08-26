@@ -3,6 +3,7 @@ set -e
 
 echo "Running Alembic migrations..."
 cd /app
+uv run alembic revision --autogenerate -m "Initial migration"
 uv run alembic upgrade head
 
 echo "Starting FastAPI with Uvicorn..."
