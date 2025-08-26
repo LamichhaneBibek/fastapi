@@ -2,8 +2,9 @@ from logging.config import fileConfig
 from sqlalchemy import create_engine
 from alembic import context
 
-from models.db import Base
-from core.config import CONFIG  # your custom config
+from app.models.db import Base
+from app.core.config import CONFIG
+  # your custom config
 
 config = context.config
 
