@@ -1,5 +1,9 @@
-#!/usr/bin/bash bash
+#!/bin/bash
+set -e
 
-export PYTHONPATH=$PWD
-#APP_ARGS="--config config.ini --logging logging.ini"
-python app/main.py $APP_ARGS
+echo "Running Alembic migrations..."
+cd /app
+uv run alembic upgrade head
+
+echo "Starting FastAPI with Uvicorn..."
+exec uvicorn app.main:app --host 0.0.0.0 --port 8000
