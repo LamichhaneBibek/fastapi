@@ -1,5 +1,5 @@
-from models import db
-from models import dto
+from app.models import db
+from app.models import dto
 
 
 def db_to_get_dto(user_db: db.UserDB) -> dto.UserDTO:

@@ -1,7 +1,7 @@
-from models import dto
-from service import user_service
-from core.security import session
-from core import dependencies
+from app.models import dto
+from app.service import user_service
+from app.core.security import session
+from app.core import dependencies
 from fastapi import APIRouter, status, Response
 
 

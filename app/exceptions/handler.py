@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi import Request
 from fastapi.responses import JSONResponse
-from exceptions.scheme import AppException
-from views import common_view
+from app.exceptions.scheme import AppException
+from app.views import common_view
 
 def add_json(app: FastAPI):
     @app.exception_handler(AppException)

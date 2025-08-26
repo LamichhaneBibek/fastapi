@@ -1,6 +1,6 @@
 from fastapi.requests import Request
-from exceptions.scheme import AppException
-from core.templates import templates
+from app.exceptions.scheme import AppException
+from app.core.templates import templates
 
 
 def error_page(request: Request, exc: AppException):

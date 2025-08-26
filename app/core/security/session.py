@@ -5,13 +5,13 @@ from fastapi import Request
 from fastapi import Response
 from fastapi import Depends
 
-from core.config import CONFIG
-from service import user_service
-from exceptions.scheme import AppException
-from models import enums
-from models import dto
-from core.security import jwt
-from core.security import bcrypt_hashing
+from app.core.config import CONFIG
+from app.service import user_service
+from app.exceptions.scheme import AppException
+from app.models import enums
+from app.models import dto
+from app.core.security import jwt
+from app.core.security import bcrypt_hashing
 
 
 def get_token(req: Request, res: Response) -> dto.Token:

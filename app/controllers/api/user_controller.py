@@ -2,9 +2,9 @@ from fastapi import APIRouter
 from fastapi import Query
 from fastapi import Path
 
-from models import dto
-from core import dependencies
-from service import user_service
+from app.models import dto
+from app.core import dependencies
+from app.service import user_service
 
 router = APIRouter(
     prefix="/user",

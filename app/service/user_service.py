@@ -1,14 +1,14 @@
 from random import randint
 
-from models import db
-from models import dto
-from models import enums
-from repos import user_repo
+from app.models import db
+from app.models import dto
+from app.models import enums
+from app.repos import user_repo
 
-from core.security import bcrypt_hashing
-from utils import formatting
-from mappers import user_mapper
-from exceptions.scheme import AppException
+from app.core.security import bcrypt_hashing
+from app.utils import formatting
+from app.mappers import user_mapper
+from app.exceptions.scheme import AppException
 
 MIN_PASS = 100000
 MAX_PASS = 999999

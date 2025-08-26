@@ -2,7 +2,7 @@ from time import time
 from random import randint
 
 from passlib.context import CryptContext
-from core.config import CONFIG
+from app.core.config import CONFIG
 
 
 CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -23,4 +23,3 @@ def random_hash() -> str:
     timestamp = time()
     random_number = randint(0, 999999)
     return CONTEXT.hash(f"{timestamp} {random_number} {CONFIG.HASH_SALT}")
-

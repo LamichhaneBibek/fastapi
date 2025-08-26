@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.sql.functions import current_time, current_timestamp
 
-from models import enums
+from app.models import enums
 
 Base = declarative_base()
 

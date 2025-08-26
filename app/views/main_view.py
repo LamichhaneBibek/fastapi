@@ -1,7 +1,7 @@
 from datetime import datetime
 from fastapi.requests import Request
-from core.templates import templates
-from models.dto import UserDTO
+from app.core.templates import templates
+from app.models.dto import UserDTO
 
 
 def main_page(request: Request):

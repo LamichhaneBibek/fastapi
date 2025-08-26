@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-from controllers.pages import page_controller
-from controllers.api import auth_controller, user_controller
-from exceptions import handler
-from core import lifespan
-from core.middlewares import static_middleware
-from core.middlewares import cors_middleware
+from app.controllers.pages import page_controller
+from app.controllers.api import auth_controller, user_controller
+from app.exceptions import handler
+from app.core import lifespan
+from app.core.middlewares import static_middleware
+from app.core.middlewares import cors_middleware
 import uvicorn
-from core.config import CONFIG
+from app.core.config import CONFIG
 
 app = FastAPI(lifespan=lifespan.lifespan)
 api = FastAPI(lifespan=lifespan.lifespan)

@@ -2,7 +2,7 @@ from time import time
 from hashlib import sha256
 from random import randint
 
-from core.config import CONFIG
+from app.core.config import CONFIG
 
 
 class HashLib:

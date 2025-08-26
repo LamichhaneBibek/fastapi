@@ -3,7 +3,7 @@ from pydantic import Field, BaseModel
 from datetime import datetime
 
 
-from models.enums import UserRole
+from app.models.enums import UserRole
 
 
 class UserCreateDTO(BaseModel):

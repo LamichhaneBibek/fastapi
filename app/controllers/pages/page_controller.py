@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
-from views import main_view
-from core.dependencies import user_dependency
+from app.views import main_view
+from app.core.dependencies import user_dependency
 
 router = APIRouter(
     prefix="",
