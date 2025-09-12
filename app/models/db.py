@@ -1,4 +1,4 @@
-from sqlalchemy import DateTime, Enum, Integer, String
+from sqlalchemy import DateTime, Enum, Integer, String, Boolean, UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.sql.functions import current_time, current_timestamp
@@ -11,12 +11,14 @@ Base = declarative_base()
 class UserDB(Base):
     __tablename__ = "users"
 
-    id = mapped_column("id", Integer, primary_key=True, autoincrement=True)
+    id = mapped_column("id", UUID, primary_key=True)
     name = mapped_column("name", String)
     email = mapped_column("email", String, unique=True)
     password = mapped_column("password", String)
     role = mapped_column("role", Enum(enums.UserRole), default=enums.UserRole.USER)
     phone = mapped_column("phone", String)
+    is_active = mapped_column("is_active", Boolean, default=False, nullable=False)
+    email_verification_token = mapped_column("email_verification_token", String, nullable=True)
     updated_at = mapped_column(
         "updated_at",
         DateTime(),
