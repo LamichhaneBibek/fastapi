@@ -66,24 +66,24 @@ def create_user(obj: dto.UserCreateDTO, background_tasks: BackgroundTasks) -> dt
         raise AppException(message="Email already exists", status_code=422)
 
     verification_token = secrets.token_urlsafe(32)
-    try:
-        send_verification_email(email_formatted, verification_token)
-        logger.info(f"Verification email sent successfully to {email_formatted}")
-    except Exception as e:
-        logger.error(f"Failed to send verification email to {email_formatted}: {str(e)}")
-        raise AppException(
-            message="Failed to send verification email. Please check your email address and try again.",
-            status_code=503
-        )
 
+    background_tasks.add_task(
+        send_verification_email, 
+        to_email=email_formatted, 
+        token=verification_token
+    )
+    logger.info(f"Verification email for {email_formatted} queued to be sent in the background.")
+    
     try:
         user = _create(obj, enums.UserRole.USER, verification_token)
         logger.info(f"User created successfully: {user.email}")
         return user_mapper.db_to_get_dto(user)
     except Exception as e:
-        logger.error(f"Failed to create user after sending email: {str(e)}")
+        # Note: If user creation fails, the email might still be sent.
+        # This is often an acceptable trade-off for performance.
+        # For more critical systems, a more robust task queue like Celery might be needed.
+        logger.error(f"Failed to create user after queuing email: {str(e)}")
         raise AppException(message="Account creation failed. Please contact support.", status_code=500)
-
 
 
 def create_admin(obj: dto.UserCreateDTO) -> dto.UserDTO:
