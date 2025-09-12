@@ -1,7 +1,7 @@
 from ssl import OP_ENABLE_MIDDLEBOX_COMPAT
 from pydantic import Field, BaseModel
 from datetime import datetime
-
+from uuid import UUID
 
 from app.models.enums import UserRole
 
@@ -13,10 +13,11 @@ class UserCreateDTO(BaseModel):
 
 
 class UserDTO(BaseModel):
-    id: int
+    id: UUID
     name: str
     email: str
     role: UserRole
+    is_active: bool
     updated_at: datetime
     created_at: datetime
 
@@ -35,5 +36,5 @@ class UserUpdatePasswordDTO(BaseModel):
     new_password: str = Field(..., min_length=6)
 
 class Token(BaseModel):
-    user_id: int
+    user_id: UUID
     role: str
