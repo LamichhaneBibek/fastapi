@@ -1,26 +1,54 @@
 from uuid import UUID
 from app.models.db import UserDB
+import logging
+from app.exceptions.scheme import AppException
 from app.core.db_context import session_maker
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+
+logger = logging.getLogger(__name__)
 
 
-def add(user: UserDB)-> UserDB:
-    with session_maker.begin() as session:
-        session.add(user)
-        return user
+def add(user: UserDB) -> UserDB:
+    """Add user with proper error handling"""
+    try:
+        with session_maker.begin() as session:
+            session.add(user)
+            session.flush()  # Flush to get any constraint violations
+            return user
+    except IntegrityError as e:
+        logger.error(f"Database integrity error: {str(e)}")
+        if "email" in str(e):
+            raise AppException(message="Email already exists", status_code=422)
+        else:
+            raise AppException(message="Database constraint violation", status_code=422)
+    except SQLAlchemyError as e:
+        logger.error(f"Database error in add_user: {str(e)}")
+
 
 
 def get_by_verification_token(token: str) -> UserDB:
     """Get user by email verification token"""
-    with session_maker() as session:
-        return session.query(UserDB).filter(
-            UserDB.email_verification_token == token
-        ).first()
+    try:
+        with session_maker() as session:
+            return session.query(UserDB).filter(
+                UserDB.email_verification_token == token
+            ).first()
+    except SQLAlchemyError as e:
+        logger.error(f"Database error in get_by_verification_token: {str(e)}")
+        return None
+
 
 def update(user: UserDB) -> UserDB:
     """Update user in database"""
-    with session_maker.begin() as session:
-        session.merge(user)
-        return user
+    try:
+        with session_maker.begin() as session:
+            session.merge(user)
+            return user
+    except SQLAlchemyError as e:
+        logger.error(f"Database error in update_user: {str(e)}")
+        raise AppException(message="Failed to update user", status_code=500)
+
+
 # def update(user: UserDB) -> None:
 #     with session_maker.begin() as session:
 #         session.query(UserDB).filter(UserDB.id == user.id).update({
@@ -46,8 +74,13 @@ def get_by_id(id: UUID) -> UserDB | None:
             UserDB.id == id
         ).first()
 
-def get_by_email(email: str) -> UserDB | None:
-    with session_maker.begin() as session:
-        return session.query(UserDB).where(
-            UserDB.email == email
-        ).first()
+def get_by_email(email: str) -> UserDB:
+    """Get user by email"""
+    try:
+        with session_maker() as session:
+            return session.query(UserDB).filter(
+                UserDB.email == email
+            ).first()
+    except SQLAlchemyError as e:
+        logger.error(f"Database error in get_by_email: {str(e)}")
+        return None
