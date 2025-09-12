@@ -26,6 +26,11 @@ class Config:
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     DB_NAME: str
+    SMTP_USER: str
+    SMTP_PASSWORD: str
+    SMTP_HOST: str
+    SMTP_PORT: int
+    FRONTEND_URL: str
 
     @staticmethod
     def get_config() -> Config:
@@ -40,7 +45,13 @@ class Config:
         postgres_user = _get_from_env("POSTGRES_USER")
         postgres_password = _get_from_env("POSTGRES_PASSWORD")
         db_name = _get_from_env("DB_NAME")
+        smt_user= _get_from_env("SMTP_USER")
+        smtp_password = _get_from_env("SMTP_PASSWORD")
+        smtp_host = _get_from_env("SMTP_HOST")
+        smtp_port = int(_get_from_env("SMTP_PORT"))
+        frontend_url = _get_from_env("FRONTEND_URL")
 
-        return Config(db_connection_string, cookies_key_name, session_time, hash_salt, service_host, service_port, postgres_host, postgres_port, postgres_user, postgres_password, db_name)
+
+        return Config(db_connection_string, cookies_key_name, session_time, hash_salt, service_host, service_port, postgres_host, postgres_port, postgres_user, postgres_password, db_name, smt_user, smtp_password, smtp_host, smtp_port, frontend_url)
 
 CONFIG = Config.get_config()
