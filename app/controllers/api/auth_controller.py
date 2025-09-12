@@ -2,7 +2,7 @@ from app.models import dto
 from app.service import user_service
 from app.core.security import session
 from app.core import dependencies
-from fastapi import APIRouter, status, Response
+from fastapi import APIRouter, status, Response, BackgroundTasks, HTTPException
 
 
 router = APIRouter(
@@ -11,8 +11,8 @@ router = APIRouter(
 )
 
 @router.post("/register", status_code=status.HTTP_201_CREATED, response_model=dto.UserDTO)
-async def register(user: dto.UserCreateDTO):
-    return user_service.create_user(user)
+async def register(user: dto.UserCreateDTO, background_tasks: BackgroundTasks):
+    return user_service.create_user(user, background_tasks)
 
 @router.post("/login", status_code=status.HTTP_200_OK, response_model=str)
 async def login(obj: dto.UserLoginDTO, res: Response):
@@ -33,3 +33,15 @@ def update_password(dto: dto.UserUpdatePasswordDTO, user: dependencies.user_depe
 @router.post("/password/reset", status_code=204)
 def reset_password(email: str):
     user_service.reset_password(email)
+
+@router.get("/verify-email")
+async def verify_email(token: str):
+    """Verify user email with token"""
+    result = user_service.verify_email(token)
+    if result:
+        return {"message": "Email verified successfully"}
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid or expired verification token"
+        )

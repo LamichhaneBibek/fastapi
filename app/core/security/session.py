@@ -46,8 +46,14 @@ async def login(obj: dto.UserLoginDTO, res: Response) -> str:
     NOW = datetime.now(timezone.utc)
 
     user_db = user_service.get_by_email(obj.email)
-    print(obj.password, user_db.password)
-    if bcrypt_hashing.validate(obj.password, user_db.password) is False:
+    if not user_db:
+        raise AppException("User not found", 404)
+
+        # 🚨 Block login if not verified
+    if not user_db.is_active:
+        raise AppException("Email not verified. Please check your inbox.", 403)
+
+    if not bcrypt_hashing.validate(obj.password, user_db.password):
         raise AppException("Incorrect password", 401)
 
     exp_date = NOW + CONFIG.SESSION_TIME

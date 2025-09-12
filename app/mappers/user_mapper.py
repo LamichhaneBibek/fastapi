@@ -9,6 +9,7 @@ def db_to_get_dto(user_db: db.UserDB) -> dto.UserDTO:
         name=user_db.name,
         role=user_db.role,
         email=user_db.email,
+        is_active= user_db.is_active,
         updated_at=user_db.updated_at,
         created_at=user_db.created_at
     )

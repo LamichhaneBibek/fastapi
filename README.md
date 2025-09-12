@@ -17,6 +17,6 @@
 </p>
 
 cd app
-uv run alembic revision --autogenerate -m "Initial migration"
+uv run alembic -c app/alembic.ini revision --autogenerate -m "add email verification fields to user"
 
 uv run alembic upgrade head
