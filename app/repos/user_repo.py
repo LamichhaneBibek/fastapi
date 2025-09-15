@@ -23,6 +23,7 @@ def add(user: UserDB) -> UserDB:
             raise AppException(message="Database constraint violation", status_code=422)
     except SQLAlchemyError as e:
         logger.error(f"Database error in add_user: {str(e)}")
+        raise AppException(message="Database error occurred", status_code=500)
 
 
 
@@ -35,7 +36,7 @@ def get_by_verification_token(token: str) -> UserDB:
             ).first()
     except SQLAlchemyError as e:
         logger.error(f"Database error in get_by_verification_token: {str(e)}")
-        return None
+        raise AppException(message="Database error occurred", status_code=500)
 
 
 def update(user: UserDB) -> UserDB:
@@ -83,4 +84,4 @@ def get_by_email(email: str) -> UserDB:
             ).first()
     except SQLAlchemyError as e:
         logger.error(f"Database error in get_by_email: {str(e)}")
-        return None
+        raise AppException(message="Database error occurred", status_code=500)
