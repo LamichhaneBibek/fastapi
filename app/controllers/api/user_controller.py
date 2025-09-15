@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Query
-
+from uuid import UUID
 from app.models import dto
 from app.core import dependencies
 from app.service import user_service
@@ -24,7 +24,7 @@ def get_admin_only(user: dependencies.admin_dependency):
     return user
 
 @router.get("/{id}", response_model=dto.UserDTO)
-def get_by_id(id: str):
+def get_by_id(id: UUID):
     return user_service.get_by_id(id)
 
 @router.get("/email/{email}", response_model=dto.UserDTO)
