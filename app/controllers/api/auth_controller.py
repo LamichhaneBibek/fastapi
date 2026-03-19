@@ -3,7 +3,8 @@ from app.models import dto
 from app.service import user_service
 from app.core.security import session
 from app.core import dependencies
-from fastapi import APIRouter, status, Response, BackgroundTasks, HTTPException
+from app.core.rate_limit import limiter
+from fastapi import APIRouter, status, Response, BackgroundTasks, HTTPException, Request
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,7 +15,8 @@ router = APIRouter(
 )
 
 @router.post("/register", status_code=status.HTTP_201_CREATED, response_model=dto.UserDTO)
-async def register(user: dto.UserCreateDTO, background_tasks: BackgroundTasks):
+@limiter.limit("3/minute")
+async def register(request: Request, user: dto.UserCreateDTO, background_tasks: BackgroundTasks):
     try:
             # Input validation happens automatically via Pydantic models
             # Additional business validation in service layer
@@ -32,7 +34,8 @@ async def register(user: dto.UserCreateDTO, background_tasks: BackgroundTasks):
         raise AppException(message="Registration failed. Please try again.", status_code=500)
 
 @router.post("/login", status_code=status.HTTP_200_OK, response_model=str)
-async def login(obj: dto.UserLoginDTO, res: Response):
+@limiter.limit("5/minute")
+async def login(request: Request, obj: dto.UserLoginDTO, res: Response):
     """Login user with rate limiting and validation"""
     try:
         # TODO: Add rate limiting here (e.g., slowapi or custom middleware)
@@ -57,11 +60,13 @@ async def check_session(token: dependencies.token_dependency):
     return token
 
 @router.put("/password/update", status_code=204)
-def update_password(dto: dto.UserUpdatePasswordDTO, user: dependencies.user_dependency):
+@limiter.limit("3/minute")
+def update_password(request: Request, dto: dto.UserUpdatePasswordDTO, user: dependencies.user_dependency):
     user_service.update_password(user, dto)
 
 @router.post("/password/reset", status_code=204)
-def reset_password(email: str):
+@limiter.limit("3/minute")
+def reset_password(request: Request, email: str):
     user_service.reset_password(email)
 
 @router.get("/verify-email", response_model=str)
