@@ -17,6 +17,7 @@ dependencies = [
     "pyjwt>=2.10.1",
     "python-multipart>=0.0.20",
     "requests>=2.32.4",
+    "slowapi>=0.1.9",
     "sqlalchemy>=2.0.41",
     "typing>=3.10.0.0",
     "uvicorn>=0.34.3",
