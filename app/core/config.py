@@ -31,6 +31,9 @@ class Config:
     SMTP_HOST: str
     SMTP_PORT: int
     FRONTEND_URL: str
+    API_KEY: str
+    API_KEY_NAME: str
+    RATE_LIMIT: str
 
     @staticmethod
     def get_config() -> Config:
@@ -50,8 +53,11 @@ class Config:
         smtp_host = _get_from_env("SMTP_HOST")
         smtp_port = int(_get_from_env("SMTP_PORT"))
         frontend_url = _get_from_env("FRONTEND_URL")
+        api_key = _get_from_env("API_KEY")
+        api_key_name = _get_from_env("API_KEY_NAME")
+        rate_limit = _get_from_env("RATE_LIMIT")
 
 
-        return Config(db_connection_string, cookies_key_name, session_time, hash_salt, service_host, service_port, postgres_host, postgres_port, postgres_user, postgres_password, db_name, smt_user, smtp_password, smtp_host, smtp_port, frontend_url)
+        return Config(db_connection_string, cookies_key_name, session_time, hash_salt, service_host, service_port, postgres_host, postgres_port, postgres_user, postgres_password, db_name, smt_user, smtp_password, smtp_host, smtp_port, frontend_url, api_key, api_key_name, rate_limit)
 
 CONFIG = Config.get_config()
