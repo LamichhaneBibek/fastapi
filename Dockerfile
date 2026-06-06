@@ -3,6 +3,15 @@ FROM python:3.13-slim AS base
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
+# Install system dependencies for OCR (Tesseract)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    tesseract-ocr \
+    libtesseract-dev \
+    libleptonica-dev \
+    tesseract-ocr-eng && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install uv
 RUN pip install --no-cache-dir uv==0.4.30
 

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.controllers.pages import page_controller
-from app.controllers.api import auth_controller, user_controller
+from app.controllers.api import auth_controller, user_controller, ocr_controller
 from app.exceptions import handler
 from app.core import lifespan
 from app.core.middlewares import static_middleware
@@ -36,6 +36,7 @@ app.include_router(page_controller.router)
 
 api.include_router(auth_controller.router)
 api.include_router(user_controller.router)
+api.include_router(ocr_controller.router)
 
 
 app.mount("/api", api)
